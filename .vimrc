@@ -13,6 +13,18 @@ let g:startify_custom_header = [
 
 " Function definitions
 
+function! AirlineInit()
+  let g:airline_section_a = airline#section#create(['mode'])
+  let g:airline_section_b = airline#section#create_left(['branch', 'hunks'])
+  let g:airline_section_c = airline#section#create(['%f'])
+  let g:airline_section_x = airline#section#create(['filetype', ' ', '%P'])
+  let g:airline_section_y = airline#section#create(['%B'])
+  let g:airline_section_z = airline#section#create_right(['%l','%c'])
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = '|'
+endfunction
+
 function! s:goyo_enter()
   silent !tmux set status off
   silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
@@ -70,6 +82,7 @@ endfunction
 execute pathogen#infect()
 " Plug
 call plug#begin('~/.vim/plugged')
+Plug 'jeetsukumaran/vim-buffergator'
 Plug 'docunext/closetag.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/nerdcommenter'
@@ -79,6 +92,7 @@ Plug 'mhinz/vim-startify'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'blueyed/vim-diminactive'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 " Settings
@@ -100,6 +114,9 @@ au Filetype jade setlocal tabstop=2 shiftwidth=2 expandtab tw=300
 au Filetype html setlocal tabstop=2 shiftwidth=2 expandtab
 au Filetype js setlocal tabstop=2 shiftwidth=2 expandtab  tw=80
 set t_Co=256
+
+" Faster Leader
+set timeoutlen=100
 
 syntax on
 filetype plugin indent on
@@ -126,7 +143,7 @@ map <C-Down> :resize +10<cr>
 nmap <F8> :TagbarToggle<CR>
 
 " Beautify json
-nmap <C-j> :%!python -m json.tool<cr>
+nmap <Leader>j :%!python -m json.tool<cr>
 
 " Move between splits using alt
 nmap <silent> <A-Up> :wincmd k<CR>
@@ -273,10 +290,10 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 " ----- <Vim-diminactive> -----
 :hi ColorColumn ctermbg=145
-let g:diminactive_use_colorcolumn = 0
+let g:diminactive_use_colorcolumn = 1
 let g:diminactive_enable_focus = 1
 let opt_DimInactiveWin=145
-autocmd VimEnter DimInactiveOff
+autocmd VimEnter * DimInactiveOff
 nmap <Leader>h :DimInactiveToggle <CR>
 
 " ----- <Zoom> -----
@@ -302,3 +319,28 @@ let  g:multi_cursor_prev_key='<C-u>'
 let  g:multi_cursor_skip_key='<C-o>'
 let  g:multi_cursor_quit_key='<Esc>'
 let  g:multi_cursor_start_key='<F5>'
+
+" ----- <Easymotion> -----
+" Gif config
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+
+" ----- <Airline> -----
+autocmd VimEnter * call AirlineInit()
+
+
+" ----- <Buffers> -----
+nmap <leader>T :enew<CR>
+nmap <leader>w :bnext<CR>
+nmap <leader>q :bprevious<CR>
+nmap <leader>bq :bp <BAR> bd #<CR>
+nmap <leader>bl :ls<CR>
+
+" ----- <Buggergator> -----
+nmap <leader>b :BuffergatorToggle<CR>
