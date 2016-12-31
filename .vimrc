@@ -14,15 +14,26 @@ let g:startify_custom_header = [
 " Function definitions
 
 function! AirlineInit()
+
+  let keys = ['a','b','c','d','e','f','g','h']
+  for k in keys
+    call airline#parts#define_text(k, k)
+  endfor
+  call airline#parts#define_accent('a', 'red')
+  call airline#parts#define_accent('b', 'green')
+  call airline#parts#define_accent('c', 'blue')
+  call airline#parts#define_accent('d', 'yellow')
+  call airline#parts#define_accent('e', 'orange')
+  call airline#parts#define_accent('f', 'purple')
+  call airline#parts#define_accent('g', 'bold')
+  call airline#parts#define_accent('h', 'italic')
   let g:airline_section_a = airline#section#create(['mode'])
   let g:airline_section_b = airline#section#create_left(['branch', 'hunks'])
   let g:airline_section_c = airline#section#create(['%f'])
   let g:airline_section_x = airline#section#create(['filetype', ' ', '%P'])
   let g:airline_section_y = airline#section#create(['%B'])
   let g:airline_section_z = airline#section#create_right(['%l','%c'])
-  let g:airline#extensions#tabline#enabled = 1
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
+
 endfunction
 
 function! s:goyo_enter()
@@ -78,14 +89,12 @@ function! SetColorschemeByTOD() " Sets my colorscheme based on the time of the d
     endif
 endfunction
 
-" Pathogen
-execute pathogen#infect()
 " Plug
 call plug#begin('~/.vim/plugged')
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'docunext/closetag.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tomtom/tcomment_vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-github-dashboard'
 Plug 'mhinz/vim-startify'
@@ -93,6 +102,40 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'blueyed/vim-diminactive'
 Plug 'easymotion/vim-easymotion'
+Plug 'rking/ag.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'Yggdroot/indentLine'
+Plug 'tmhedberg/matchit'
+Plug 'vim-syntastic/syntastic'
+Plug 'tomtom/tlib_vim'
+Plug 'vim-airline/vim-airline'
+Plug 'fatih/vim-go'
+Plug 'tomtom/tlib_vim'
+Plug 'eparreno/vim-l9'
+Plug 'honza/vim-snippets'
+Plug 'davidhalter/jedi-vim'
+Plug 'Valloric/MatchTagAlways'
+Plug 'godlygeek/tabular'
+Plug 'mbbill/undotree'
+Plug 'uarun/vim-protobuf'
+Plug 'mickaobrien/vim-stackoverflow'
+Plug 'kien/ctrlp.vim'
+Plug 'majutsushi/tagbar'
+Plug 'Chiel92/vim-autoformat'
+Plug 'tpope/vim-fugitive'
+Plug 'statianzo/vim-jade'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'hdima/python-syntax'
+Plug 'tomtom/tcomment_vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'craigemery/vim-autotag'
+Plug 'airblade/vim-gitgutter'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'Valloric/YouCompleteMe'
+" Plug 'scrooloose/nerdcommenter'
+" Plug 'vim-scripts/AutoComplPop'
+" Plug 'nathanaelkane/vim-indent-guides'
 call plug#end()
 
 " Settings
@@ -344,3 +387,14 @@ nmap <leader>bl :ls<CR>
 
 " ----- <Buggergator> -----
 nmap <leader>b :BuffergatorToggle<CR>
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+
+" ----- <Tcommenter> -----
+let g:tcommentMapLeaderOp1='g'
+
+" ----- <sudo save> ---
+"  This is a hack using tee to write to higher permission files when
+"  forgetting sudo vim
+cmap w!! w !sudo tee > /dev/null %
