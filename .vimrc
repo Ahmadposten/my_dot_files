@@ -385,7 +385,7 @@ nmap <leader>q :bprevious<CR>
 nmap <leader>bq :bp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
 
-" ----- <Buggergator> -----
+" ----- <Buffergator> -----
 nmap <leader>b :BuffergatorToggle<CR>
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
