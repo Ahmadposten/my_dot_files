@@ -1,0 +1,43 @@
+Config { font = "xft:monospace:size=10"
+       , additionalFonts = ["xft:DejaVu Sans Mono:size=10","xft:Symbola:size=10","xft:Code2000:size=10"]
+       , bgColor = "grey15"
+       , fgColor = "grey58"
+       , position = Bottom
+       , lowerOnStart = False
+       , hideOnStart = False
+       , allDesktops = False
+       , overrideRedirect = True
+       , textOffset = 14
+       , iconOffset = -1
+       , alpha = 255
+       , iconRoot = "."
+       , pickBroadest = False
+       , persistent = False
+       , border = NoBorder
+       , borderColor = "grey15"
+       , commands = [ Run UnsafeXMonadLog
+                    , Run PipeReader "/var/run/user/1000/volume-display" "volume"
+                    , Run PipeReader "/var/run/user/1000/brightness-display" "brightness"
+                    , Run MultiCpu [ "-t", "|<vbar0><vbar1><vbar2><vbar3>|"
+                                   , "-H", "100"
+                                   , "-h", "red"
+                                   ] 10
+                    , Run Date "%a %b %d %H:%M" "date" 600
+                    , Run Com "netinfo" [] "netinfo" 50
+                    , Run Locks
+                    , Run Mpris2 "spotify" ["-t", "<artist> - [<album>] <title> <length>"] 1
+                    , Run Memory [ "-t", "<fn=3>⛁</fn> <usedvbar>"
+                                 , "-H", "80"
+                                 ] 10
+                    , Run Battery [ "-t", "<acstatus>"
+                                  , "-l", "red"
+                                  , "-L", "20"
+                                  , "--"
+                                  , "-i", "<fc=mediumseagreen><fn=2>🔌</fn> <leftvbar></fc>"
+                                  , "-O", "<fn=2>🔌</fn> <leftvbar>"
+                                  , "-o", "<fn=2>🔋</fn> <leftvbar>"
+                                  ] 10
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %mpris2%}{ <action=`pavucontrol` button=3><action=`volume-control toggle` button=1>%volume%</action></action> <fn=1><action=`dual-monitors` button=3>%brightness%</action></fn> <action=`wpa_cli status | xmessage -file -` button=1>%netinfo%</action> <fn=1>%memory% %battery% <action=`st -e htop` button=3>%multicpu%</action></fn> %locks% "
