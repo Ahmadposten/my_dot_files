@@ -3,12 +3,28 @@ let g:startify_show_sessions = 1
 let g:startify_sessions_dir = '~/.vim/sessions'
 let g:startify_change_to_vcs_root = 1
 let g:startify_custom_header = [
-\ '    ______                  _                ',
-\ '   / ____/___ _____  ____  (_)______  _______',
-\ '  / / __/ __ `/ __ \/ __ \/ / ___/ / / / ___/',
-\ ' / /_/ / /_/ / / / / / / / / /__/ /_/ (__  ) ',
-\ ' \____/\__,_/_/ /_/_/ /_/_/\___/\__,_/____/  ',
-\ '                                             ',
+\ '          _____                    _____                    _____          ',
+\ '         /\    \                  /\    \                  /\    \         ',
+\ '        /::\    \                /::\    \                /::\    \        ',
+\ '       /::::\    \              /::::\    \              /::::\    \       ',
+\ '      /::::::\    \            /::::::\    \            /::::::\    \      ',
+\ '     /:::/\:::\    \          /:::/\:::\    \          /:::/\:::\    \     ',
+\ '    /:::/__\:::\    \        /:::/__\:::\    \        /:::/__\:::\    \    ',
+\ '   /::::\   \:::\    \      /::::\   \:::\    \      /::::\   \:::\    \   ',
+\ '  /::::::\   \:::\    \    /::::::\   \:::\    \    /::::::\   \:::\    \  ',
+\ ' /:::/\:::\   \:::\____\  /:::/\:::\   \:::\    \  /:::/\:::\   \:::\    \ ',
+\ '/:::/  \:::\   \:::|    |/:::/  \:::\   \:::\____\/:::/  \:::\   \:::\____\',
+\ '\::/   |::::\  /:::|____|\::/    \:::\  /:::/    /\::/    \:::\   \::/    /',
+\ ' \/____|:::::\/:::/    /  \/____/ \:::\/:::/    /  \/____/ \:::\   \/____/ ',
+\ '       |:::::::::/    /            \::::::/    /            \:::\    \     ',
+\ '       |::|\::::/    /              \::::/    /              \:::\____\    ',
+\ '       |::| \::/____/               /:::/    /                \::/    /    ',
+\ '       |::|  ~|                    /:::/    /                  \/____/     ',
+\ '       |::|   |                   /:::/    /                               ',
+\ '       \::|   |                  /:::/    /                                ',
+\ '        \:|   |                  \::/    /                                 ',
+\ '         \|___|                   \/____/                                  ',
+\ '                                                                           ',
 \ ]
 
 " Function definitions
@@ -91,11 +107,17 @@ endfunction
 
 " Plug
 call plug#begin('~/.vim/plugged')
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'elixir-lang/vim-elixir'
+Plug 'edkolev/promptline.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'ryanoasis/vim-devicons'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'docunext/closetag.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'tomtom/tcomment_vim'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'leafgarland/typescript-vim'
 Plug 'junegunn/vim-github-dashboard'
 Plug 'mhinz/vim-startify'
 Plug 'junegunn/limelight.vim'
@@ -109,7 +131,9 @@ Plug 'tmhedberg/matchit'
 Plug 'vim-syntastic/syntastic'
 Plug 'tomtom/tlib_vim'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'fatih/vim-go'
+Plug 'vim-scripts/mru.vim'
 Plug 'tomtom/tlib_vim'
 Plug 'eparreno/vim-l9'
 Plug 'honza/vim-snippets'
@@ -133,6 +157,11 @@ Plug 'craigemery/vim-autotag'
 Plug 'airblade/vim-gitgutter'
 Plug 'heavenshell/vim-jsdoc'
 Plug 'Valloric/YouCompleteMe'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'vadv/vim-chef'
+
 " Plug 'scrooloose/nerdcommenter'
 " Plug 'vim-scripts/AutoComplPop'
 " Plug 'nathanaelkane/vim-indent-guides'
@@ -159,7 +188,7 @@ au Filetype js setlocal tabstop=2 shiftwidth=2 expandtab  tw=80
 set t_Co=256
 
 " Faster Leader
-set timeoutlen=100
+set timeoutlen=500
 
 syntax on
 filetype plugin indent on
@@ -232,7 +261,7 @@ nmap <leader>l :set list!<CR>
 set listchars=tab:\|\ ,eol:¬,space:.
 
 " Before 4 PM i need a white screen, I need a black after that
-call SetColorschemeByTOD()
+" call SetColorschemeByTOD()
 " JSDoc configuration
 let g:jsdoc_allow_input_prompt = 1
 nmap <silent> <C-l> <Plug>(jsdoc)
@@ -273,6 +302,7 @@ au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
 au FileType go nmap <Leader>s <Plug>(go-implements)
+" autocmd FileType ruby,eruby set filetype=ruby.eruby.chef
 
 " ----- <python syntax> -----
 let python_highlight_all = 1
@@ -306,6 +336,7 @@ if executable("ag")
     set grepprg=ag\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
     let g:ctrlp_use_caching = 0
+    let g:ctrlp_working_path_mode = 0
 endif
 
 " ----- <Highlighting> -----
@@ -387,14 +418,68 @@ nmap <leader>bl :ls<CR>
 
 " ----- <Buffergator> -----
 nmap <leader>b :BuffergatorToggle<CR>
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_extensions = ['branch', 'tabline']
 
 " ----- <Tcommenter> -----
-let g:tcommentMapLeaderOp1='g'
+" let g:tcommentMapLeaderOp1='g'
 
 " ----- <sudo save> ---
 "  This is a hack using tee to write to higher permission files when
 "  forgetting sudo vim
 cmap w!! w !sudo tee > /dev/null %
+:colorscheme xoria256
+
+set guifont=Doid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 10
+
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_nerdtree = 1
+let g:webdevicons_enable_airline_tabline = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:webdevicons_enable_ctrlp = 1
+let g:webdevicons_enable_flagship_statusline = 1
+
+
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
+let g:airline_powerline_fonts = 1
+let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = 'ƛ'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 1
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = 'js'
+
+
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['Dockerfile'] = 'Doc'
+
+let g:WebDevIconsOS = 'Darwin'
+let g:airline#themes#malokai#palette={}
+let g:airline_theme='powerlineish'
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols#branch = ''
+let g:airline_symbols#readonly = ''
+let g:airline_symbols#linenr = ''
+
+
+
+
+" let g:promptline_theme = 'airline'
+let g:promptline_powerline_symbols = 1
+let g:promptline_preset = {
+      \'a'    : [ '%n' ],
+      \'b'    : [ promptline#slices#cwd() ],
+      \'c'    : [ promptline#slices#vcs_branch() ],
+			\'warn'		: [ promptline#slices#battery({ 'threshold': 100 }) ]}
+
+set directory=/ramcache//
+
+" jenkins
+autocmd BufRead,BufNewFile Jenkinsfile set ft=Jenkinsfile
+autocmd BufRead,BufNewFile Jenkinsfile* setf Jenkinsfile
+autocmd BufRead,BufNewFile *.jenkinsfile set ft=Jenkinsfile
+autocmd BufRead,BufNewFile *.jenkinsfile setf Jenkinsfile
+
